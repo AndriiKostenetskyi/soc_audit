@@ -21,5 +21,4 @@ NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' 
 This error can be ignored. It is a warning from the urllib3 module.
 
 ### Expected output
-![img.png](img.png)
-
+![img_1.png](img_1.png)

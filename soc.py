@@ -13,8 +13,8 @@ response.raise_for_status()  # Check if the request was successful
 # Save the content to a CSV file
 csv_content = response.content.decode('utf-8')
 
-# Read the CSV content into a DataFrame
-data = pd.read_csv(io.StringIO(csv_content))
+# Read the CSV content into a DataFrame, ensuring the first row is included
+data = pd.read_csv(io.StringIO(csv_content), header=None)
 
 # Indexes for columns
 index_time = 21  # "V" column index (22nd column, 0-indexed)
@@ -25,7 +25,7 @@ time_data = data.iloc[:, index_time].astype(str)
 ip_data = data.iloc[:, index_ip].astype(str)
 
 # Create a new DataFrame with the extracted columns
-details_df = pd.DataFrame({'ip': ip_data, 'time': time_data})
+details_df = pd.DataFrame({'row_number': data.index, 'ip': ip_data, 'time': time_data})
 
 # Debug: Check the extracted data
 print("Extracted time data head:")
@@ -65,10 +65,10 @@ non_working_hours_data = details_df[(details_df['time'] < start_time) | (details
 print("\nNon-working hours DataFrame head:")
 print(non_working_hours_data.head())
 
-# Output the result in simple format: IP and time
-print("\nIP and Time outside working hours:")
+# Output the result in simple format: row_number, IP, and time
+print("\nRow number, IP, and Time outside working hours:")
 for index, row in non_working_hours_data.iterrows():
-    print(f"IP: {row['ip']}, Time: {row['time']}")
+    print(f"Row: {row['row_number']}, IP: {row['ip']}, Time: {row['time']}")
 
 # Calculate the number of unique IPs
 unique_ips = non_working_hours_data['ip'].unique()
